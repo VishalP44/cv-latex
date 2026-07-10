@@ -1,4 +1,4 @@
-name: Compile LaTeX CV
+name: Compile LaTeX CVs
 
 on:
   push:
@@ -15,21 +15,34 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Compile LaTeX
+      - name: Compile Keyloop CV
         uses: xu-cheng/latex-action@v3
         with:
-          root_file: cv.tex
+          root_file: keyloop_cv.tex
 
-      - name: Upload PDF artifact
+      - name: Compile Sigmoid CV
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: sigmoid_cv.tex
+
+      - name: Compile Maneuver CV
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: maneuver_cv.tex
+
+      - name: Upload PDF artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Vishal_Patil_CV
-          path: cv.pdf
+          name: Vishal_Patil_CV_Variants
+          path: |
+            keyloop_cv.pdf
+            sigmoid_cv.pdf
+            maneuver_cv.pdf
 
-      - name: Commit PDF to repo
+      - name: Commit PDFs to repo
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add cv.pdf
-          git diff --cached --quiet || git commit -m "Auto-compile CV PDF"
+          git add keyloop_cv.pdf sigmoid_cv.pdf maneuver_cv.pdf
+          git diff --cached --quiet || git commit -m "Auto-compile CV PDFs"
           git push
